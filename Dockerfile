@@ -28,7 +28,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:nginx/stable
-RUN add-apt-repository ppa:ondrej/php5-5.6
+RUN apt-get install -y language-pack-en-base
+RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y $BUILD_PACKAGES
