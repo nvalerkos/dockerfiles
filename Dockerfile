@@ -26,7 +26,7 @@ RUN groupmod -g ${BOOT2DOCKER_GID} staff
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
-RUN apt-get install -y software-properties-common
+RUN apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:nginx/stable
 RUN add-apt-repository ppa:ondrej/php5-5.6
 RUN apt-get update
