@@ -1,22 +1,32 @@
 # ubuntu-lnp
-=================
 
 Out-of-the-box LNP image (Linux Nginx with PHP Fpm)
 
-Usage
------
+Pull with php 5.6.x
+---------------------
+
+	docker pull justckr/ubuntu-lnp:latest
+
+Pull with php 7.0.x
+---------------------
+
+	docker pull justckr/ubuntu-lnp:php7
+
+Building it your own
+-----------------------
 
 To build your own image download the source  and execute the following command within the root of the source:
 
 	docker build -t ubuntu-nginx .
 
 
-Running your LAMP docker image
-------------------------------
+Running
+---------------------------------------
 
 Start your image binding the external ports 80 and 443 in all interfaces to your container:
 
-	docker run -d -P --name myapp -v /path/to/cloned/project:/app ubuntu-nginx
+	docker run -d -P --name myapp -v /path/to/cloned/project:/app justckr/ubuntu-nginx
+
 
 Test your deployment:
 
