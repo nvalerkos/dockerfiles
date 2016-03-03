@@ -7,7 +7,7 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -sf /bin/true /sbin/initctl
 
 #packages to install
-ENV BUILD_PACKAGES="supervisor nginx php5.6-fpm git php5.6-mysql php-apc php5.6-curl php5.6-gd php5.6-intl php5.6-mcrypt php-memcache php5.6-sqlite php5.6-tidy php5.6-xmlrpc php5.6-xsl php5.6-pgsql php5.6-ldap pwgen"
+ENV BUILD_PACKAGES="supervisor nginx php5.6-fpm git php5.6-mysql php-apc php5.6-curl php5.6-gd php5.6-intl php5.6-mcrypt php-memcache php5.6-sqlite php5.6-tidy php5.6-xmlrpc php5.6-pgsql php5.6-ldap pwgen"
 
 #for compatibiltiy
 ENV DOCKER_USER_ID 501 
@@ -57,13 +57,12 @@ RUN sed -i -e "s/pm.start_servers = 2/pm.start_servers = 3/g" /etc/php/5.6/fpm/p
 RUN sed -i -e "s/pm.min_spare_servers = 1/pm.min_spare_servers = 2/g" /etc/php/5.6/fpm/pool.d/www.conf
 RUN sed -i -e "s/pm.max_spare_servers = 3/pm.max_spare_servers = 4/g" /etc/php/5.6/fpm/pool.d/www.conf
 RUN sed -i -e "s/pm.max_requests = 500/pm.max_requests = 200/g" /etc/php/5.6/fpm/pool.d/www.conf
+RUN sed -i -e "/listen\s*=\s*\/run\/php\/php5.6-fpm.sock/c\listen = 127.0.0.1:9000" /etc/php/5.6/fpm/pool.d/www.conf
+RUN sed -i -e "/pid\s*=\s*\/run/c\pid = /run/php5.6-fpm.pid" /etc/php/5.6/fpm/php-fpm.conf
 
 #fix ownership of sock file
 RUN sed -i -e "s/;listen.mode = 0660/listen.mode = 0750/g" /etc/php/5.6/fpm/pool.d/www.conf
 RUN find /etc/php/5.6/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
-
-# mycrypt conf
-RUN php5.6enmod mcrypt
 
 # nginx site conf
 RUN rm -Rf /etc/nginx/conf.d/*
