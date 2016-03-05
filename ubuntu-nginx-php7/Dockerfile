@@ -1,41 +1,41 @@
-FROM ubuntu:latest
+FROM justckr/ubuntu-base:latest
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
-
-# Surpress Upstart errors/warning
-RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -sf /bin/true /sbin/initctl
-
-#packages to install
-ENV BUILD_PACKAGES="supervisor nginx php7.0-fpm git php7.0-mysql php-apc php7.0-curl php7.0-gd php7.0-intl php7.0-mcrypt php-memcache php7.0-sqlite php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-pgsql php7.0-ldap pwgen"
-
-#for compatibiltiy
-ENV DOCKER_USER_ID 501 
-ENV DOCKER_USER_GID 20
-
-ENV BOOT2DOCKER_ID 1000
-ENV BOOT2DOCKER_GID 50
-
-# # Tweaks to give the web service and php write permissions to the app
-RUN usermod -u ${BOOT2DOCKER_ID} www-data
-RUN usermod -G staff www-data
-
-RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1)
-RUN groupmod -g ${BOOT2DOCKER_GID} staff
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
-RUN apt-get install -y software-properties-common python-software-properties
+
+RUN apt-get install -y software-properties-common \
+    python-software-properties \
+    language-pack-en-base
+
 RUN add-apt-repository ppa:nginx/stable
-RUN apt-get install -y language-pack-en-base
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
+
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y $BUILD_PACKAGES
+
+RUN apt-get install -y nginx \
+    php7.0-fpm \
+    php7.0-mysql \
+    php-apc \
+    php7.0-curl \
+    php7.0-gd \
+    php7.0-intl \
+    php7.0-mcrypt \
+    php-memcache \
+    php7.0-sqlite \
+    php7.0-tidy \
+    php7.0-xmlrpc \
+    php7.0-xsl \
+    php7.0-pgsql \
+    php7.0-ldap
 
 # Cleanup
-RUN apt-get remove --purge -y software-properties-common
+RUN apt-get remove --purge -y software-properties-common \
+    python-software-properties
+
 RUN apt-get autoremove -y
 RUN apt-get clean
 RUN apt-get autoclean
