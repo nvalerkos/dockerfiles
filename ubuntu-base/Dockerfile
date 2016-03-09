@@ -30,7 +30,10 @@ RUN apt-get install -y supervisor \
 	bash-completion \
 	hostname \
 	vim \
-	screen
+	screen \
+	wget \
+	curl \
+	tree
 
 # Cleanup
 RUN apt-get autoremove -y
