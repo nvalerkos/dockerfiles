@@ -2,17 +2,6 @@ FROM ubuntu:latest
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
-# Setup proxy
-ENV http_proxy http://10.185.207.118:8080
-ENV https_proxy http://10.185.207.118:8080
-ENV no_proxy booking.com,corp.pcln.com,rentalcars.com,traveljigsaw.com,traveljigsaw.local
-ENV http_proxy_request_fullurl false
-
-ENV HTTP_PROXY http://10.185.207.118:8080
-ENV HTTPS_PROXY http://10.185.207.118:8080
-ENV NO_PROXY booking.com,corp.pcln.com,rentalcars.com,traveljigsaw.com,traveljigsaw.local
-ENV HTTP_PROXY_REQUEST_FULLURL false
-
 # Surpress Upstart errors/warning
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -sf /bin/true /sbin/initctl
