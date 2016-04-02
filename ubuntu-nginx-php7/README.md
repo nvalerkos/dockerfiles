@@ -5,12 +5,12 @@ Out-of-the-box LNP image (Linux Nginx with PHP Fpm)
 Pull with php 5.6.x
 ---------------------
 
-	docker pull justckr/ubuntu-lnp:latest
+	docker pull justckr/ubuntu-nginx-php:latest
 
 Pull with php 7.0.x
 ---------------------
 
-	docker pull justckr/ubuntu-lnp:php7
+	docker pull justckr/ubuntu-nginx-php:php7
 
 Building it your own
 -----------------------
