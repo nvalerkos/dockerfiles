@@ -64,8 +64,13 @@ RUN apt-get autoclean
 # Tweek apache config
 ADD conf/apache-default.conf /etc/apache2/sites-available/000-default.conf
 RUN ln -sfF /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+
+ADD conf/apache-default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+RUN ln -sfF /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
+
 RUN a2enmod rewrite
 RUN a2enmod ldap
+RUN a2enmod ssl
 
 # Add scripts
 ADD scripts/start-apache2.sh /start-apache2.sh
@@ -87,6 +92,7 @@ RUN mkdir -p /var/www/html/logs
 
 # add test PHP file
 ADD src/index.php /app/src/public/index.php
+ADD src/index.php /app/src/public/info.php
 RUN chown -Rf www-data.www-data /app
 RUN chown -Rf www-data.www-data /var/www/html
 
