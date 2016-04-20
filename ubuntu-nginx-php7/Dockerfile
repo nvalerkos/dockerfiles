@@ -28,9 +28,33 @@ RUN apt-get install -y nginx \
     php7.0-sqlite \
     php7.0-tidy \
     php7.0-xmlrpc \
-    php7.0-xsl \
     php7.0-pgsql \
-    php7.0-ldap
+    php7.0-ldap \
+    freetds-common \
+    php7.0-pgsql \
+    php7.0-sqlite3 \
+    php7.0-json \
+    php7.0-xml \
+    php7.0-mbstring \
+    php7.0-soap \
+    php7.0-zip \
+    php7.0-cli \
+    php7.0-sybase \
+    php7.0-odbc \
+    freetds-common \
+    php7.0-dev
+
+# Install xdebug
+RUN wget http://xdebug.org/files/xdebug-2.4.0.tgz
+RUN tar -xvzf xdebug-2.4.0.tgz
+RUN cd xdebug-2.4.0 && phpize
+RUN cd xdebug-2.4.0 && ./configure
+RUN cd xdebug-2.4.0 && make
+RUN cd xdebug-2.4.0 && cp modules/xdebug.so /usr/lib/php/20131226
+ADD conf/xdebug.conf /xdebug.conf
+RUN cat /xdebug.conf >> /etc/php/7.0/fpm/php.ini
+RUN rm -rf /xdebug-2.4.0
+RUN rm -rf /xdebug-2.4.0.tgz
 
 # Cleanup
 RUN apt-get remove --purge -y software-properties-common \
@@ -67,6 +91,7 @@ RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/
 # nginx site conf
 RUN rm -Rf /etc/nginx/conf.d/*
 RUN rm -Rf /etc/nginx/sites-available/default
+RUN rm -Rf /etc/nginx/sites-enabled/default
 RUN mkdir -p /etc/nginx/ssl/
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
@@ -94,5 +119,7 @@ RUN chown -Rf www-data.www-data /var/www/html
 # Expose Ports
 EXPOSE 443
 EXPOSE 80
+EXPOSE 9000
+EXPOSE 9001
 
 CMD ["/bin/bash", "/start.sh"]

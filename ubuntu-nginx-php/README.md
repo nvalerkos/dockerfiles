@@ -25,7 +25,7 @@ Running
 
 Start your image binding the external ports 80 and 443 in all interfaces to your container:
 
-	docker run -d -P --name myapp -v /path/to/cloned/project:/app justckr/ubuntu-nginx
+	docker run -d -P --name myapp -v /path/to/cloned/project:/app justckr/ubuntu-nginx-php
 
 
 Test your deployment:

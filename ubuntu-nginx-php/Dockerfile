@@ -10,7 +10,6 @@ RUN apt-get install -y software-properties-common \
     python-software-properties \
     language-pack-en-base
 
-
 RUN add-apt-repository ppa:nginx/stable
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
@@ -92,6 +91,7 @@ RUN find /etc/php/5.6/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/
 # nginx site conf
 RUN rm -Rf /etc/nginx/conf.d/*
 RUN rm -Rf /etc/nginx/sites-available/default
+RUN rm -Rf /etc/nginx/sites-enabled/default
 RUN mkdir -p /etc/nginx/ssl/
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
@@ -120,5 +120,6 @@ RUN chown -Rf www-data.www-data /var/www/html
 EXPOSE 443
 EXPOSE 80
 EXPOSE 9000
+EXPOSE 9001
 
 CMD ["/bin/bash", "/start.sh"]
