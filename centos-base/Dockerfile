@@ -10,6 +10,7 @@ ENV BOOT2DOCKER_ID 1000
 ENV BOOT2DOCKER_GID 50
 
 # # Tweaks to give the web service and php write permissions to the app
+RUN useradd -d /usr/share/httpd -r -s /sbin/nologin apache
 RUN usermod -u ${BOOT2DOCKER_ID} apache
 RUN usermod -G staff apache
 
