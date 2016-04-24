@@ -10,11 +10,11 @@ ENV BOOT2DOCKER_ID 1000
 ENV BOOT2DOCKER_GID 50
 
 # # Tweaks to give the web service and php write permissions to the app
-#RUN usermod -u ${BOOT2DOCKER_ID} www-data
-#RUN usermod -G staff www-data
+RUN usermod -u ${BOOT2DOCKER_ID} apache
+RUN usermod -G staff apache
 
-#RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1)
-#RUN groupmod -g ${BOOT2DOCKER_GID} staff
+RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1)
+RUN groupmod -g ${BOOT2DOCKER_GID} staff
 
 # Install packages
 RUN yum -y upgrade
