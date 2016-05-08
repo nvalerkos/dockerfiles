@@ -1,4 +1,4 @@
-FROM justckr/ubuntu-base:latest
+FROM justckr/ubuntu-apache:latest
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
@@ -15,8 +15,7 @@ RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install -y apache2 \
-    libapache2-mod-php5.6 \
+RUN apt-get install -y libapache2-mod-php5.6 \
     php5.6 \
     php5.6-curl \
     php5.6-gd \
@@ -61,23 +60,7 @@ RUN apt-get autoremove -y
 RUN apt-get clean
 RUN apt-get autoclean
 
-# Tweek apache config
-ADD conf/apache-default.conf /etc/apache2/sites-available/000-default.conf
-RUN ln -sfF /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
-
-ADD conf/apache-default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-RUN ln -sfF /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
-
-RUN a2enmod rewrite
 RUN a2enmod ldap
-RUN a2enmod ssl
-
-# Add scripts
-ADD scripts/start-apache2.sh /start-apache2.sh
-RUN chmod 755 /start-apache2.sh
-
-# Supervisor Config
-ADD conf/supervisord.conf /etc/supervisord.conf
 
 # Start Supervisord
 ADD scripts/start.sh /start.sh
@@ -86,16 +69,11 @@ RUN chmod 755 /start.sh
 # Setup Volume
 VOLUME ["/app", "/etc/apache2/sites-enabled"]
 
-# create web server directories
-RUN mkdir -p /app/src/public
-RUN mkdir -p /var/www/html/logs
-
 # add test PHP file
 ADD src/index.php /app/src/public/index.php
 ADD src/index.php /app/src/public/info.php
 RUN chown -Rf www-data.www-data /app
 RUN chown -Rf www-data.www-data /var/www/html
-
 
 # Expose Ports
 EXPOSE 443

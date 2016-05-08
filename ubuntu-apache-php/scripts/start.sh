@@ -18,7 +18,7 @@ if [[ "$ERRORS" != "1" ]] ; then
 fi
 
 # Very dirty hack to replace variables in code with ENVIRONMENT values
-if [[ "$TEMPLATE_NGINX_HTML" == "1" ]] ; then
+if [[ "$TEMPLATE_HTML" == "1" ]] ; then
   for i in $(env)
   do
     variable=$(echo "$i" | cut -d'=' -f1)
