@@ -23,7 +23,7 @@ procs=$(cat /proc/cpuinfo |grep processor | wc -l)
 sed -i -e "s/worker_processes 5/worker_processes $procs/" /etc/nginx/nginx.conf
 
 # Very dirty hack to replace variables in code with ENVIRONMENT values
-if [[ "$TEMPLATE_NGINX_HTML" == "1" ]] ; then
+if [[ "$TEMPLATE_HTML" == "1" ]] ; then
   for i in $(env)
   do
     variable=$(echo "$i" | cut -d'=' -f1)
