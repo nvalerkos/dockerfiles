@@ -80,7 +80,7 @@ RUN find /etc/php/5.6/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/
 
 # Supervisor Config
 ADD conf/supervisord.conf /supervisord.conf
-RUN echo /supervisord.conf >> /etc/supervisord.conf
+RUN cat /supervisord.conf >> /etc/supervisord.conf
 
 # Start Supervisord
 ADD scripts/start.sh /start.sh
