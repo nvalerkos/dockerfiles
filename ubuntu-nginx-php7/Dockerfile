@@ -19,7 +19,7 @@ RUN apt-get upgrade -y
 RUN apt-get install -y nginx \
     php7.0-fpm \
     php7.0-mysql \
-    php-apc \
+    php-apcu \
     php7.0-curl \
     php7.0-gd \
     php7.0-intl \
