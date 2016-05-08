@@ -19,7 +19,7 @@ RUN apt-get upgrade -y
 RUN apt-get install -y nginx \
     php5.6-fpm \
     php5.6-mysql \
-    php-apc \
+    php5-apcu \
     php5.6-curl \
     php5.6-gd \
     php5.6-intl \
