@@ -28,6 +28,7 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
       && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \
       && chsh -s /bin/zsh
 
+RUN cp /usr/share/zoneinfo/Europe/London /etc/localtime
 # Cleanup
 RUN apt-get autoremove -y
 RUN apt-get clean
