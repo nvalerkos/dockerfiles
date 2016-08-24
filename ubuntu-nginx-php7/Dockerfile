@@ -2,6 +2,9 @@ FROM justckr/ubuntu-nginx:latest
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
+# Xdebug Remote Host IP
+ENV XDEBUG_REMOTE_HOST_IP 192.168.65.1
+
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
