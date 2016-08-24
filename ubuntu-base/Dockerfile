@@ -21,7 +21,10 @@ RUN apt-get install -y supervisor \
 	curl \
 	tree \
 	htop \
-	zsh
+	zsh \
+    iputils-ping \
+    net-tools \
+    telnet
 
 # Install Oh My Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
