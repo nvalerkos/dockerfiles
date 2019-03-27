@@ -11,6 +11,11 @@ Pull with php 7.0.x
 ---------------------
 
 	docker pull justckr/ubuntu-nginx-php:php7
+	
+Pull with php 7.2.x
+---------------------
+
+	docker pull justckr/ubuntu-nginx-php:php7.2
 
 Building it your own
 -----------------------
