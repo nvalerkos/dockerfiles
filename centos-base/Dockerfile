@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM centos:centos8
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
@@ -13,12 +13,13 @@ ENV BOOT2DOCKER_GID 50
 ADD conf/nginx.repo /etc/yum.repos.d/nginx.repo
 
 #Add EPEL and REMI repos and then enable php 7.4 on remi
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
-RUN yum -y install yum-utils
-RUN yum-config-manager --enable remi-php74
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN dnf -y install dnf-utils
+RUN dnf module -y install php:remi-7.4
 
 # Install packages
+RUN dnf -y update
 RUN yum -y upgrade
 
 RUN yum -y install \
