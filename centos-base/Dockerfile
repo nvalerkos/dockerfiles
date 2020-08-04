@@ -1,4 +1,4 @@
-FROM centos:centos6.8
+FROM centos:centos8
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
@@ -12,11 +12,14 @@ ENV BOOT2DOCKER_GID 50
 #Add the official nginx repo
 ADD conf/nginx.repo /etc/yum.repos.d/nginx.repo
 
-#Add the webtatic EL yum repo for php7
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-RUN rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+#Add EPEL and REMI repos and then enable php 7.4 on remi
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN dnf -y install dnf-utils
+RUN dnf module -y install php:remi-7.4
 
 # Install packages
+RUN dnf -y update
 RUN yum -y upgrade
 
 RUN yum -y install \
@@ -31,30 +34,24 @@ RUN yum -y install \
     wget \
     tree \
     htop \
-    zsh \
     nginx \
-    php70w \
-    php70w-fpm \
-    php70w-mysql \
-    php70w-common \
-    php70w-gd \
-    php70w-intl \
-    php70w-mcrypt \
-    php70w-tidy	\
-    php70w-xmlrpc \
-    php70w-pgsql \
-    php70w-xml \
-    php70w-mbstring	\
-    php70w-soap	\
-    php70w-cli \
-    php70w-odbc	\
-    php70w-pecl-xdebug \
-    php70w-opcache
-
-# Install Oh My Zsh
-RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
-      && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \
-      && chsh -s /bin/zsh
+    php \
+    php-fpm \
+    php-mysql \
+    php-common \
+    php-gd \
+    php-intl \
+    php-mcrypt \
+    php-tidy	\
+    php-xmlrpc \
+    php-pgsql \
+    php-xml \
+    php-mbstring	\
+    php-soap	\
+    php-cli \
+    php-odbc	\
+    php-pecl-xdebug \
+    php-opcache
 
 # Cleanup
 RUN yum clean all
@@ -63,7 +60,6 @@ RUN yum clean all
 RUN groupadd staff
 RUN usermod -u ${BOOT2DOCKER_ID} nginx
 RUN usermod -G staff nginx
-RUN usermod -G staff apache
 
 RUN groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1)
 RUN groupmod -g ${BOOT2DOCKER_GID} staff
@@ -86,7 +82,7 @@ RUN chmod 755 /start.sh
 RUN mkdir -p /app/src/public
 ADD src/index.php /app/src/public/index.php
 ADD src/index.php /app/src/public/info.php
-RUN chown -Rf apache.apache /app
+RUN chown -Rf nginx.nginx /app
 
 # Setup Volume
 VOLUME ["/app"]
